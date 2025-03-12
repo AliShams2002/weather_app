@@ -1,6 +1,7 @@
 import React from "react";
 import { apiKey } from "../JpAxios";
 import { jpAxios } from "../JpAxios";
+import axios from "axios";
 
 
 const WithFeching = (MainComponent) => {
@@ -10,11 +11,13 @@ const WithFeching = (MainComponent) => {
         const getWeatherWithCity = async (query) => {
             let fechingObj = {
                 current: [],
-                forecast: []
+                forecast: [],
+                hourly: []
             }
 
             fechingObj.current = await jpAxios.get(`weather?q=${query}&units=metric&appid=${apiKey}`);
-            fechingObj.forecast = await jpAxios.get(`forecast?q=${query}&units=metric&appid=${apiKey}`);
+            fechingObj.forecast = (await jpAxios.get(`forecast?q=${query}&units=metric&appid=${apiKey}`));
+            fechingObj.hourly = (await jpAxios.get(`forecast?q=${query}&units=metric&appid=${apiKey}`)).data.list.splice(1, 9);
 
             return fechingObj;
         }
@@ -22,11 +25,13 @@ const WithFeching = (MainComponent) => {
         const getWeatherWithLocation = async (lat, lon) => {
             let fechingObj = {
                 current: [],
-                forecast: []
+                forecast: [],
+                hourly: []
             }
 
             fechingObj.current = await jpAxios.get(`weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`);
             fechingObj.forecast = await jpAxios.get(`forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`);
+            fechingObj.hourly = (await jpAxios.get(`forecast?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`)).data.list.splice(1, 9);
 
             return fechingObj;
         }

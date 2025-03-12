@@ -25,13 +25,14 @@ const WeatherComponent = ({getWeatherWithCity, getWeatherWithLocation, getAirInd
     
     const handelQuery = (query) => {
         setLoading(true);
-        
+
         getWeatherWithCity(query).then(res => {
             setCurrent(res.current.data);
             setCoord({lat: res.current.data.coord.lat, lon: res.current.data.coord.lon});
 
-            setHourlyWeather(res.forecast.data.list.splice(1, 9));
             setForecast(res.forecast.data);
+            setHourlyWeather(res.hourly);
+
         }).catch(err => {
             alert('Pleas enter the name of your country/city correctly!');
             setLoading(false);
@@ -56,8 +57,8 @@ const WeatherComponent = ({getWeatherWithCity, getWeatherWithLocation, getAirInd
             setCurrent(res.current.data);
             setCoord({lat: res.current.data.coord.lat, lon: res.current.data.coord.lon});
 
-            setHourlyWeather(res.forecast.data.list.splice(1, 9));
             setForecast(res.forecast.data);
+            setHourlyWeather(res.hourly);
         })
     }
 
@@ -102,7 +103,6 @@ const WeatherComponent = ({getWeatherWithCity, getWeatherWithLocation, getAirInd
     return (
         <div className='flex items-center justify-center flex-col gap-5 py-2 px-6'>
             <section className='w-full flex items-center justify-between gap-2'>
-                {/* <img className='max-h-10 h-auto' src={`icons/Weather_App_Icon.png`} alt="" /> */}
                 <span className='max-w-[150px] lg:min-w-[200px] w-auto md:w-full text-base lg:text-2xl font-bold text-[#695CFE]'>WEATHER APP</span>
                 <form className='w-full col-span-3 lg:col-span-2 lg:col-start-2 flex items-center justify-center' onSubmit={(e) => {
                     e.preventDefault();

@@ -32,7 +32,7 @@ const ForcastWeather = ({forecast}) => {
     const today = new Date().getDate();
     const month = monthsYear[new Date().getMonth()].slice(0, 3);
 
-    const forecastDays = daysWeek.slice(new Date().getDay() + 1, daysWeek.length).concat(
+    const forecastDays = daysWeek.slice(new Date().getDay(), daysWeek.length).concat(
         daysWeek.slice(0, new Date().getDay())
     );
 

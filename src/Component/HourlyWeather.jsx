@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 const HourlyWeather = ({hourly}) => {
 
+    const [hourlyItems, setHourlyItems] = useState([]);
     const [timeArray, setTimaArray] = useState([]);
     const [isready, setIsReady] = useState(false);
 
