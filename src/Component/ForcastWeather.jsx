@@ -29,22 +29,31 @@ const ForcastWeather = ({forecast}) => {
 
     const [forecastWeather, setForecastWeather] = useState([]);
     const [isready, setIsReady] = useState(false);
-    const today = new Date().getDate();
+    const [days, setDays] = useState([])
     const month = monthsYear[new Date().getMonth()].slice(0, 3);
 
     const forecastDays = daysWeek.slice(new Date().getDay(), daysWeek.length).concat(
         daysWeek.slice(0, new Date().getDay())
     );
 
-    useState(() => {
+
+    const handelDateForcast = () => {
         for (let index = 0; index < 5; index++) {
-            let month = new Date().getMonth() + 1;
+            let year = new Date().getFullYear();
             let day = new Date().getDate() + index;
-            const timeTaken = `2025-${month >9 ? month : `0${month}`}-${day >9 ? day : `0${day}`}`;
-            let forecastFillter = forecast.list.filter(x => x.dt_txt.includes(timeTaken));
+            let daysInMonth = new Date(year, new Date().getMonth() + 1, 0).getDate();
+            day = day > daysInMonth ? new Date().getDate() + index - daysInMonth : day;
+            days.push(day);
+            let month = new Date().getDate() + index > daysInMonth ? new Date().getMonth() + 2 : new Date().getMonth() + 1;
+
+            const timeTaken = `${year}-${month >9 ? month : `0${month}`}-${day >9 ? day : `0${day}`}`;
+            let forecastFillter = forecast.list.filter(x => x.dt_txt.includes(timeTaken));                        
             forecastWeather.push(forecastFillter[0]);
         }
+    }
 
+    useState(() => {
+        handelDateForcast();
         setIsReady(true);
     }, [])
     
@@ -59,7 +68,7 @@ const ForcastWeather = ({forecast}) => {
                             <img alt="weather" className='text-white-100 max-w-12 w-auto' src={`icons/${item.weather[0].icon}.png`} />
                             <h4><span></span><span className='text-xl'>{Math.round(item.main.temp)}°</span></h4>
                         </div>
-                        <span className='text-white-200 text-sm'>{`${today + index} ${month}`}</span>
+                        <span className='text-white-200 text-sm'>{`${days[index]} ${month}`}</span>
                         <span className='text-white-200 text-sm ml-auto'>{forecastDays[index]}</span>
                     </li>
                 )) : <></>}
